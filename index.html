@@ -3,131 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Sprint Challenge</title>
+    <title>Multi-Game Challenge</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f9;
+            text-align: center;
         }
         .container {
-            text-align: center;
-            background: white;
+            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             width: 90%;
-            max-width: 400px;
+            max-width: 500px;
         }
         h1 {
-            font-size: 24px;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #ffdd57;
+        }
+        .game-section {
             margin-bottom: 20px;
         }
-        .timer, .score {
-            font-size: 18px;
-            margin-bottom: 20px;
+        .game-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #ff6f61;
         }
-        .question {
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-        input[type="text"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
+        .game-section p {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
         }
         button {
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 1rem;
             border: none;
             border-radius: 5px;
-            background-color: #007bff;
+            background: #ff6f61;
             color: white;
             cursor: pointer;
+            transition: background 0.3s ease;
         }
         button:hover {
-            background-color: #0056b3;
+            background: #ff3b2f;
         }
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 20px;
-            }
-            .timer, .score {
-                font-size: 16px;
-            }
-            .question {
-                font-size: 18px;
-            }
-            input[type="text"] {
-                font-size: 14px;
-            }
-            button {
-                font-size: 14px;
-            }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+            margin-bottom: 15px;
+        }
+        .timer, .score {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Math Sprint Challenge</h1>
-        <div class="timer">Time left: <span id="time">03:00</span></div>
-        <div class="score">Score: <span id="score">0</span></div>
-        <div class="question" id="question"></div>
-        <input type="text" id="answer" placeholder="Your answer">
-        <button onclick="checkAnswer()">Submit</button>
+        <h1>Multi-Game Challenge</h1>
+        
+        <!-- Game Selection -->
+        <div class="game-section">
+            <h2>Select a Game</h2>
+            <button onclick="showGame('math')">Math Game</button>
+            <button onclick="showGame('word')">Word Game</button>
+            <button onclick="showGame('trivia')">Trivia Game</button>
+        </div>
+
+        <!-- Math Game -->
+        <div id="math-game" class="game-section hidden">
+            <h2>Math Sprint Challenge</h2>
+            <div class="timer">Time left: <span id="math-time">03:00</span></div>
+            <div class="score">Score: <span id="math-score">0</span></div>
+            <div class="question" id="math-question"></div>
+            <input type="text" id="math-answer" placeholder="Your answer">
+            <button onclick="checkMathAnswer()">Submit</button>
+        </div>
+
+        <!-- Word Game -->
+        <div id="word-game" class="game-section hidden">
+            <h2>Word Scramble Challenge</h2>
+            <div class="timer">Time left: <span id="word-time">02:00</span></div>
+            <div class="score">Score: <span id="word-score">0</span></div>
+            <div class="question" id="word-question"></div>
+            <input type="text" id="word-answer" placeholder="Your answer">
+            <button onclick="checkWordAnswer()">Submit</button>
+        </div>
+
+        <!-- Trivia Game -->
+        <div id="trivia-game" class="game-section hidden">
+            <h2>Trivia Challenge</h2>
+            <div class="timer">Time left: <span id="trivia-time">02:30</span></div>
+            <div class="score">Score: <span id="trivia-score">0</span></div>
+            <div class="question" id="trivia-question"></div>
+            <input type="text" id="trivia-answer" placeholder="Your answer">
+            <button onclick="checkTriviaAnswer()">Submit</button>
+        </div>
     </div>
 
     <script>
-        let timeLeft = 180;
-        let score = 0;
-        let timer;
+        // Common Variables
+        let currentGame = null;
+        let timers = { math: 180, word: 120, trivia: 150 };
+        let scores = { math: 0, word: 0, trivia: 0 };
+        let intervals = { math: null, word: null, trivia: null };
 
-        function startGame() {
-            timer = setInterval(updateTimer, 1000);
-            generateQuestion();
+        // Show Selected Game
+        function showGame(game) {
+            if (currentGame) {
+                document.getElementById(`${currentGame}-game`).classList.add('hidden');
+                clearInterval(intervals[currentGame]);
+            }
+            currentGame = game;
+            document.getElementById(`${game}-game`).classList.remove('hidden');
+            startGame(game);
         }
 
-        function updateTimer() {
-            timeLeft--;
-            let minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
-            document.getElementById('time').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        // Start Game
+        function startGame(game) {
+            timers[game] = game === 'math' ? 180 : game === 'word' ? 120 : 150;
+            scores[game] = 0;
+            document.getElementById(`${game}-score`).textContent = 0;
+            document.getElementById(`${game}-time`).textContent = formatTime(timers[game]);
+            intervals[game] = setInterval(() => updateTimer(game), 1000);
+            generateQuestion(game);
+        }
 
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                alert(`Game over! Your score is ${score}`);
+        // Update Timer
+        function updateTimer(game) {
+            timers[game]--;
+            document.getElementById(`${game}-time`).textContent = formatTime(timers[game]);
+            if (timers[game] <= 0) {
+                clearInterval(intervals[game]);
+                alert(`Game over! Your score is ${scores[game]}`);
             }
         }
 
-        function generateQuestion() {
-            let num1 = Math.floor(Math.random() * 100);
-            let num2 = Math.floor(Math.random() * 100);
-            let operator = Math.random() > 0.5 ? '+' : '-';
-            document.getElementById('question').textContent = `What is ${num1} ${operator} ${num2}?`;
-            window.currentAnswer = operator === '+' ? num1 + num2 : num1 - num2;
+        // Format Time
+        function formatTime(seconds) {
+            let minutes = Math.floor(seconds / 60);
+            let secs = seconds % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
         }
 
-        function checkAnswer() {
-            let userAnswer = parseInt(document.getElementById('answer').value);
-            if (userAnswer === window.currentAnswer) {
-                score += 3;
+        // Math Game Logic
+        function generateQuestion(game) {
+            if (game === 'math') {
+                let num1 = Math.floor(Math.random() * 100);
+                let num2 = Math.floor(Math.random() * 100);
+                let operator = Math.random() > 0.5 ? '+' : '-';
+                document.getElementById('math-question').textContent = `What is ${num1} ${operator} ${num2}?`;
+                window.currentMathAnswer = operator === '+' ? num1 + num2 : num1 - num2;
+            } else if (game === 'word') {
+                let words = ["apple", "banana", "cherry", "date", "elderberry"];
+                let word = words[Math.floor(Math.random() * words.length)];
+                let scrambled = word.split('').sort(() => Math.random() - 0.5).join('');
+                document.getElementById('word-question').textContent = `Unscramble: ${scrambled}`;
+                window.currentWordAnswer = word;
+            } else if (game === 'trivia') {
+                let questions = [
+                    { question: "What is the capital of France?", answer: "Paris" },
+                    { question: "What is 2 + 2?", answer: "4" },
+                    { question: "What is the largest planet?", answer: "Jupiter" }
+                ];
+                let trivia = questions[Math.floor(Math.random() * questions.length)];
+                document.getElementById('trivia-question').textContent = trivia.question;
+                window.currentTriviaAnswer = trivia.answer;
+            }
+        }
+
+        // Check Answers
+        function checkMathAnswer() {
+            let userAnswer = parseInt(document.getElementById('math-answer').value);
+            if (userAnswer === window.currentMathAnswer) {
+                scores.math += 3;
             } else {
-                score -= 1;
+                scores.math -= 1;
             }
-            document.getElementById('score').textContent = score;
-            document.getElementById('answer').value = '';
-            generateQuestion();
+            document.getElementById('math-score').textContent = scores.math;
+            document.getElementById('math-answer').value = '';
+            generateQuestion('math');
         }
 
-        startGame();
+        function checkWordAnswer() {
+            let userAnswer = document.getElementById('word-answer').value.toLowerCase();
+            if (userAnswer === window.currentWordAnswer) {
+                scores.word += 3;
+            } else {
+                scores.word -= 1;
+            }
+            document.getElementById('word-score').textContent = scores.word;
+            document.getElementById('word-answer').value = '';
+            generateQuestion('word');
+        }
+
+        function checkTriviaAnswer() {
+            let userAnswer = document.getElementById('trivia-answer').value.trim();
+            if (userAnswer.toLowerCase() === window.currentTriviaAnswer.toLowerCase()) {
+                scores.trivia += 3;
+            } else {
+                scores.trivia -= 1;
+            }
+            document.getElementById('trivia-score').textContent = scores.trivia;
+            document.getElementById('trivia-answer').value = '';
+            generateQuestion('trivia');
+        }
     </script>
 </body>
-</html>
+                </htm
