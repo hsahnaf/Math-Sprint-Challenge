@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Sprint Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .timer, .score {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+            }
+            .timer, .score {
+                font-size: 16px;
+            }
+            .question {
+                font-size: 18px;
+            }
+            input[type="text"] {
+                font-size: 14px;
+            }
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Math Sprint Challenge</h1>
+        <div class="timer">Time left: <span id="time">03:00</span></div>
+        <div class="score">Score: <span id="score">0</span></div>
+        <div class="question" id="question"></div>
+        <input type="text" id="answer" placeholder="Your answer">
+        <button onclick="checkAnswer()">Submit</button>
+    </div>
+
+    <script>
+        let timeLeft = 180;
+        let score = 0;
+        let timer;
+
+        function startGame() {
+            timer = setInterval(updateTimer, 1000);
+            generateQuestion();
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            document.getElementById('time').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                alert(`Game over! Your score is ${score}`);
+            }
+        }
+
+        function generateQuestion() {
+            let num1 = Math.floor(Math.random() * 100);
+            let num2 = Math.floor(Math.random() * 100);
+            let operator = Math.random() > 0.5 ? '+' : '-';
+            document.getElementById('question').textContent = `What is ${num1} ${operator} ${num2}?`;
+            window.currentAnswer = operator === '+' ? num1 + num2 : num1 - num2;
+        }
+
+        function checkAnswer() {
+            let userAnswer = parseInt(document.getElementById('answer').value);
+            if (userAnswer === window.currentAnswer) {
+                score += 3;
+            } else {
+                score -= 1;
+            }
+            document.getElementById('score').textContent = score;
+            document.getElementById('answer').value = '';
+            generateQuestion();
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
