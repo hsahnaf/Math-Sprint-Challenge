@@ -5,54 +5,25 @@ body {
     background: #f4f4f9;
     color: #333;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    height: 100vh;
     text-align: center;
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 1200px;
-    margin: 20px auto;
-    position: relative;
-}
-
-.ad-top, .ad-bottom {
-    width: 100%;
-    text-align: center;
-    margin: 10px 0;
-}
-
-.ad-left, .ad-right {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.ad-left {
-    left: 10px;
-}
-
-.ad-right {
-    right: 10px;
-}
-
-.ad-container iframe {
-    border: none;
-    overflow: hidden;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
 }
 
 h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
     color: #2c3e50;
-}
-
-.game-selection {
-    margin-bottom: 20px;
 }
 
 .game-selection button {
@@ -73,8 +44,6 @@ h1 {
 
 .game {
     margin-top: 20px;
-    width: 100%;
-    max-width: 600px;
 }
 
 .timer, .score {
@@ -141,47 +110,4 @@ button:hover {
 
 .hidden {
     display: none;
-}
-
-/* Mobile Responsive Styles */
-@media (max-width: 768px) {
-    .ad-left, .ad-right {
-        display: none; /* Hide side ads on mobile */
-    }
-
-    .ad-top, .ad-bottom {
-        width: 100%;
-        height: auto;
-    }
-
-    .ad-top iframe, .ad-bottom iframe {
-        width: 100%;
-        height: 90px;
-    }
-
-    h1 {
-        font-size: 2rem;
-    }
-
-    .game-selection button {
-        width: 100%;
-        margin: 5px 0;
-    }
-
-    .game {
-        padding: 10px;
-    }
-
-    .question {
-        font-size: 1.2rem;
-    }
-
-    input[type="text"] {
-        font-size: 0.9rem;
-    }
-
-    button {
-        width: 100%;
-        font-size: 0.9rem;
-    }
 }
