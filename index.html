@@ -7,19 +7,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Top Ad -->
-    <div class="ad-top">
-        <iframe src="https://www.effectiveratecpm.com/d6ymaac0n?key=af7ce8c8034f9f00da622e23614b38e5" width="728" height="90" frameborder="0" scrolling="no"></iframe>
-    </div>
-
     <div class="container">
         <h1>Brain Blitz: Ultimate Challenge</h1>
         
-        <!-- Left Side Ad (Hidden on Mobile) -->
-        <div class="ad-left">
-            <iframe src="https://www.effectiveratecpm.com/s26mvssd3?key=e00b655152c2d042b6072b2893466428" width="160" height="600" frameborder="0" scrolling="no"></iframe>
-        </div>
-
         <!-- Game Selection -->
         <div class="game-selection">
             <button onclick="loadGame('math')">Math Game</button>
@@ -27,7 +17,7 @@
             <button onclick="loadGame('trivia')">Trivia Game</button>
         </div>
 
-        <!-- Games -->
+        <!-- Math Game -->
         <div id="math-game" class="game hidden">
             <h2>Math Sprint Challenge</h2>
             <div class="timer">Time left: <span id="math-time">03:00</span></div>
@@ -38,6 +28,7 @@
             <div id="math-feedback" class="feedback"></div>
         </div>
 
+        <!-- Word Game -->
         <div id="word-game" class="game hidden">
             <h2>Word Scramble Challenge</h2>
             <div class="timer">Time left: <span id="word-time">02:00</span></div>
@@ -48,6 +39,7 @@
             <div id="word-feedback" class="feedback"></div>
         </div>
 
+        <!-- Trivia Game -->
         <div id="trivia-game" class="game hidden">
             <h2>Trivia Challenge</h2>
             <div class="timer">Time left: <span id="trivia-time">02:30</span></div>
@@ -57,18 +49,8 @@
             <button onclick="checkTriviaAnswer()">Submit</button>
             <div id="trivia-feedback" class="feedback"></div>
         </div>
-
-        <!-- Right Side Ad (Hidden on Mobile) -->
-        <div class="ad-right">
-            <iframe src="https://www.effectiveratecpm.com/mc98g9d8k?key=c5769fca407bb85d2a071c20069697d1" width="160" height="600" frameborder="0" scrolling="no"></iframe>
-        </div>
-    </div>
-
-    <!-- Bottom Ad -->
-    <div class="ad-bottom">
-        <iframe src="https://www.effectiveratecpm.com/d6ymaac0n?key=af7ce8c8034f9f00da622e23614b38e5" width="728" height="90" frameborder="0" scrolling="no"></iframe>
     </div>
 
     <script src="script.js"></script>
 </body>
-    </html>
+</html>
