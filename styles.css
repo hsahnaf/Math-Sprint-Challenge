@@ -142,3 +142,46 @@ button:hover {
 .hidden {
     display: none;
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .ad-left, .ad-right {
+        display: none; /* Hide side ads on mobile */
+    }
+
+    .ad-top, .ad-bottom {
+        width: 100%;
+        height: auto;
+    }
+
+    .ad-top iframe, .ad-bottom iframe {
+        width: 100%;
+        height: 90px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .game-selection button {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .game {
+        padding: 10px;
+    }
+
+    .question {
+        font-size: 1.2rem;
+    }
+
+    input[type="text"] {
+        font-size: 0.9rem;
+    }
+
+    button {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+}
